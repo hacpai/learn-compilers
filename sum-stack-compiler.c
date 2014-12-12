@@ -120,7 +120,21 @@ struct List_t *List_new (struct Stack_t *instr, struct List_t *next)
 // "printer"
 void List_reverse_print (struct List_t *list)
 {
-  TODO();
+  //TODO();
+  switch (list->instr->kind){
+  case STACK_PUSH:{
+    struct Stack_Push *p = (struct Stack_Push *)list;
+    printf ("\npush %d", p->i);
+    break;
+  }
+  case STACK_ADD:{
+    struct Stack_Add *p = (struct Stack_Add *)list;
+    printf ("\nadd");
+    break;
+  }
+  default:
+    break;
+  }
 }
 
 //////////////////////////////////////////////////
@@ -142,8 +156,8 @@ void compile (struct Exp_t *exp)
   }
   case EXP_SUM:{
     //TODO();
-    struct Exp_Sum_new *p = (struct Exp_Int *)exp;
-    emit (Stack_Add_new (p->i));
+    struct Exp_Sum *p = (struct Exp_Sum *)exp;
+    emit (Stack_Add_new ());
     break;
   }
   default:
