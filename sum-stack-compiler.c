@@ -141,7 +141,9 @@ void compile (struct Exp_t *exp)
     break;
   }
   case EXP_SUM:{
-    TODO();
+    //TODO();
+    struct Exp_Sum_new *p = (struct Exp_Int *)exp;
+    emit (Stack_Add_new (p->i));
     break;
   }
   default:
