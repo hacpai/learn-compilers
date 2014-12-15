@@ -29,7 +29,7 @@ struct Exp_Sum
 };
 
 // "constructors"
-struct Exp_t *Exp_Int_new (int i)
+struct Exp_t *New_Exp_Int (int i)
 {
     struct Exp_Int *p = malloc (sizeof(*p));
     p->kind = EXP_INT;
@@ -37,7 +37,7 @@ struct Exp_t *Exp_Int_new (int i)
     return (struct Exp_t *)p;
 }
 
-struct Exp_t *Exp_Sum_new (struct Exp_t *left, struct Exp_t *right)
+struct Exp_t *New_Exp_Sum (struct Exp_t *left, struct Exp_t *right)
 {
     struct Exp_Sum *p = malloc (sizeof(*p));
     p->kind = EXP_SUM;
@@ -87,14 +87,14 @@ struct Stack_Push
 };
 
 // "constructors"
-struct Stack_t *Stack_Add_new ()
+struct Stack_t *New_Stack_Add ()
 {
     struct Stack_Add *p = malloc (sizeof(*p));
     p->kind = STACK_ADD;
     return (struct Stack_t *)p;
 }
 
-struct Stack_t *Stack_Push_new (int i)
+struct Stack_t *New_Stack_Push (int i)
 {
     struct Stack_Push *p = malloc (sizeof(*p));
     p->kind = STACK_PUSH;
@@ -109,7 +109,7 @@ struct List_t
     struct List_t *next;
 };
 
-struct List_t *List_new (struct Stack_t *instr, struct List_t *next)
+struct List_t *New_List (struct Stack_t *instr, struct List_t *next)
 {
     struct List_t *p = malloc (sizeof (*p));
     p->instr = instr;
@@ -122,7 +122,7 @@ void Reverse_print_list (struct List_t *list)
 {
     if (list == NULL) return;
     Reverse_print_list (list->next);
-  //TODO();
+    //TODO();
     switch (list->instr->kind) {
         case STACK_PUSH: {
             struct Stack_Push *p = (struct Stack_Push *)(list->instr);
@@ -130,7 +130,7 @@ void Reverse_print_list (struct List_t *list)
             break;
      }
         case STACK_ADD: {
-            struct Stack_Add *p = (struct Stack_Add *)list;
+            //struct Stack_Add *p = (struct Stack_Add *)list;
             printf ("\nadd");
             list=list->next;
             break;
@@ -146,7 +146,7 @@ struct List_t *all = 0;
 
 void Emit (struct Stack_t *instr)
 {
-    all = List_new (instr, all);
+    all = New_List (instr, all);
 }
 
 void Compile (struct Exp_t *exp)
@@ -154,15 +154,15 @@ void Compile (struct Exp_t *exp)
     switch (exp->kind){
         case EXP_INT:{
             struct Exp_Int *p = (struct Exp_Int *)exp;
-            Emit (Stack_Push_new (p->i));
+            Emit (New_Stack_Push (p->i));
             break;
   }
-    //TODO();
+        //TODO();
         case EXP_SUM:{
             struct Exp_Sum *p = (struct Exp_Sum *)exp;
             Compile (p->left);
-            Emit (Stack_Add_new ());
             Compile (p->right);
+            Emit (New_Stack_Add ());
             break;
   }
         default:
@@ -181,9 +181,9 @@ int main()
     //          +   4
     //         / \
     //        2   3
-    struct Exp_t *exp = Exp_Sum_new (Exp_Sum_new(Exp_Int_new (2)
-                                               , Exp_Int_new (3))
-                                   , Exp_Int_new (4));
+    struct Exp_t *exp = New_Exp_Sum (New_Exp_Sum(New_Exp_Int (2)
+                                               , New_Exp_Int (3))
+                                   , New_Exp_Int (4));
     // print out this tree:
     printf ("the expression is:\n");
     Print_Exp (exp);
