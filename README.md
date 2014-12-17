@@ -7,5 +7,5 @@ learn-compilers
 
 ### Index
 
-* sum-stack-compiler.c - 小型的从表达式语言Sum到栈计算机Stack的编译器
+* sum-stack-compiler.c - 小型的求和表达式语言Sum到栈计算机Stack的编译器
 
